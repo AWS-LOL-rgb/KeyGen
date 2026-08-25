@@ -166,17 +166,15 @@ Unsigned builds may trigger Windows SmartScreen warnings. That is expected for b
 
 ## 📤 Export formats
 
-KEYGEN supports several export formats for different workflows.
+KEYGEN supports the following export and import formats:
 
-| Format | Encryption | Intended use |
-|---|---:|---|
-| `.bin` | ✅ Yes | KEYGEN-to-KEYGEN encrypted backup/import |
-| `.csv` | ❌ No | Browser password import workflows |
-| `.json` | ❌ No | Structured local data |
-| `.txt` | ❌ No | Human-readable export |
-| `.md` | ❌ No | Human-readable Markdown export |
-
-> ⚠️ **Important:** CSV, JSON, TXT, and Markdown exports are readable files. Anyone who obtains one of them can read the credentials inside. Treat them like plaintext secrets and delete them when they are no longer needed.
+| Format | Intended use |
+|---|---|
+| `.bin` | KEYGEN encrypted backup/import |
+| `.csv` | Browser password import workflows |
+| `.json` | Structured local data |
+| `.txt` | Human-readable export |
+| `.md` | Human-readable Markdown export |
 
 ---
 
@@ -206,9 +204,7 @@ A forgotten master password cannot be recovered by the application.
 
 ## 🎓 CS50P
 
-KEYGEN is a **CS50P final project** built around a single `project.py` entry point and the required tested helper functions, while still growing into a complete native desktop application.
-
-The project combines coursework requirements with practical application architecture, UI design, cryptography, testing, packaging, and Windows desktop distribution.
+**KEYGEN is my CS50P final project.** It started as a course requirement and grew into a complete native Windows application with its own UI, vault, cryptography, testing, and packaging workflow.
 
 ---
 
@@ -218,10 +214,3 @@ The source tree stays relatively small because the application is mostly Python 
 
 The installed application is much larger because PyInstaller bundles the Python runtime and Qt dependencies with the program. The packaging configuration removes unused Qt components such as WebEngine, QML, and Multimedia where possible without changing the interface.
 
----
-
-<div align="center">
-
-### Built with Python • PySide6 • Cryptography • A little stubbornness 😄
-
-</div>
