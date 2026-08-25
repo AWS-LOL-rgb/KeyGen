@@ -1,107 +1,227 @@
-# KEYGEN
+<div align="center">
 
-#### Description:
+# 🔐 KEYGEN
 
-KEYGEN is an offline Windows desktop app written only in Python. It creates strong passwords, passphrases, and PINs, estimates how hard they are to guess, can lengthen a weak password with extra random characters, and stores logins in a local encrypted vault. There is no website, no account, and no internet use while it runs.
+### A fast, offline password & credential vault for Windows — built entirely with Python.
 
-You start it with `python project.py`. A native window opens (PySide6 / Qt Widgets). The Generator page is the home screen: pick Password, Passphrase, or PIN, press Generate, then Copy or Save to Vault. The Vault page looks like a password list even when locked; rows stay blurred until you enter the master password. There is no recovery for that password — only a full wipe.
+<p>
+  <img src="https://img.shields.io/badge/Python-3.12%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.12+" />
+  <img src="https://img.shields.io/badge/PySide6-Qt%20Widgets-41CD52?style=for-the-badge&logo=qt&logoColor=white" alt="PySide6" />
+  <img src="https://img.shields.io/badge/Platform-Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white" alt="Windows" />
+  <img src="https://img.shields.io/badge/Offline-100%25-111111?style=for-the-badge&logo=protonvpn&logoColor=white" alt="Offline" />
+</p>
 
----
+<p>
+  Generate strong passwords, memorable passphrases and secure PINs, estimate strength, and keep credentials inside a local encrypted vault — with no account and no network connection required.
+</p>
 
-## What it does
-
-- **Password** — 4–64 characters, optional upper / lower / digits / symbols, optional skip of look-alike characters (`0 O o 1 l I |`). Randomness comes from Python’s `secrets` module, not `random`.
-- **Passphrase** — 3–12 words from a fixed 512-word list (9 bits per word), with a chosen separator.
-- **PIN** — numeric only, length 4–12.
-- **Fortifier** — appends extra CSPRNG characters to a string you type.
-- **Strength** — entropy bits, a level (WEAK … VERY STRONG), and a short crack-time estimate. Only very short, low-diversity strings are called weak.
-- **Vault** — AES-256-GCM file on disk (`%USERPROFILE%\.keygen\vault.bin`). The master password is never stored.
-- **Export / import** — encrypted `.bin` for KEYGEN only; Chrome-style CSV (`name,url,username,password`) for browsers; JSON; readable TXT or Markdown. CSV / JSON / TXT / MD are **not** encrypted.
-
----
-
-## How it works
-
-1. Generate uses `secrets` so each output is cryptographically random.
-2. If several character classes are on, the generator forces at least one character from each class, then shuffles.
-3. Strength is `length × log2(pool)` for passwords and `words × 9` for passphrases. Times are estimates, not promises.
-4. Unlocking the vault derives a key with PBKDF2-HMAC-SHA256 (200 000 iterations) and decrypts the file. Wrong password fails cleanly.
-5. A forgotten master password cannot be reset except by deleting the vault file.
+</div>
 
 ---
 
-## Files
+## ✨ Overview
 
-- `project.py` — `main()` starts the GUI. Also defines top-level `generate_password`, `generate_passphrase`, and `calculate_strength` (required by CS50P), plus `generate_pin` and `fortify_password`.
-- `test_project.py` — `test_generate_password`, `test_generate_passphrase`, `test_calculate_strength`.
-- `requirements.txt` — `PySide6`, `cryptography`, `pytest`, `pyinstaller`.
-- `app/` — window, custom widgets, painted icons, themes, dialogs, animations.
-- `core/` — generator, word list, strength math, crypto, vault file I/O.
-- `packaging/` — PyInstaller spec, Inno Setup script, icon, `build.bat`.
-- `tools/make_icon.py` — builds `packaging/app.ico`.
+**KEYGEN** is a lightweight Windows desktop application designed to make secure credential generation simple and pleasant to use.
 
----
+It runs locally, uses Python's cryptographically secure `secrets` module for generated values, and stores vault data on your own machine. There is no website, no account system, and no cloud service involved while the application is running.
 
-## Design choices
+The home screen is the **Generator**, where you can create a password, passphrase, or PIN and then copy it or save it to the vault. The **Vault** keeps its entries visually blurred while locked, so the interface remains useful without exposing the secrets behind it.
 
-- **Desktop, not a web page** — the course and the product both need Python-only, offline code. A browser UI would have broken that rule.
-- **Custom-painted widgets** — default Qt looks like a class demo; KEYGEN is meant to look like a small real utility (orange `#FF5A1F` on near-black).
-- **Icons drawn in Python** — no CDN, no icon fonts, works offline.
-- **Blurred vault instead of an empty lock screen** — you see the layout; secrets stay hidden until unlock.
-- **Wipe instead of “forgot password”** — recovering a vault without the master key would mean storing that key, which we refuse to do.
-- **Browser CSV as its own export** — Chrome/Edge/Firefox expect `name,url,username,password` and a real `https://` URL. A `.bin` file is useless to a browser.
+> 🔒 **Privacy by design:** KEYGEN does not send generated credentials or vault contents to a server.
 
 ---
 
-## Why the project folder and the installed app differ in size
+## 🚀 Features
 
-- The **source tree** is small: Python files plus one icon.
-- The **installed app** is large (tens of megabytes) because PyInstaller copies the Python runtime and Qt. That is the toolkit, not extra features.
-- `packaging/keygen.spec` drops unused Qt pieces (WebEngine, QML, Multimedia). Visual quality stays the same. Going much smaller would mean leaving Qt.
-
----
-
-## For users
-
-**Run from source (Windows):**
-
-1. Install Python 3.12+.
-2. Open a terminal in this folder.
-3. `python -m venv .venv` then `.venv\Scripts\activate`
-4. `pip install -r requirements.txt`
-5. `python project.py`
-
-**Install a built copy:**
-
-- Double-click `dist\keygen-setup.exe` if you have a build (picks a folder; optional desktop shortcut; no license page).
-- Or run `dist\KEYGEN\KEYGEN.exe` directly (portable).
-- Unsigned builds may show Windows SmartScreen. That is normal without a paid code-signing certificate. Use **More info → Run anyway** on your own PC.
-
-Vault data stays on your machine. JSON/CSV/TXT exports are readable by anyone who has the file — delete them after use.
+| Feature | Description |
+|---|---|
+| 🔑 **Password Generator** | Generate 4–64 character passwords with configurable uppercase, lowercase, digits, symbols, and look-alike character exclusion. |
+| 🧩 **Passphrase Generator** | Create 3–12 word passphrases from a fixed 512-word list with a selectable separator. |
+| 🔢 **PIN Generator** | Generate numeric PINs from 4–12 digits. |
+| 🛠️ **Fortifier** | Strengthen an existing string by appending additional cryptographically random characters. |
+| 📊 **Strength Estimation** | Shows estimated entropy, a strength level, and a rough crack-time estimate. |
+| 🗄️ **Encrypted Vault** | Store credentials locally in an AES-256-GCM encrypted vault. |
+| 📤 **Export / Import** | KEYGEN encrypted `.bin`, browser CSV, JSON, TXT, and Markdown formats. |
+| 🎨 **Custom UI** | Custom-painted controls, icons, dark theme, and small animations instead of stock-looking Qt widgets. |
+| 🌐 **Offline First** | Designed to work without a website, account, API, CDN, or internet connection. |
 
 ---
 
-## For developers
+## 🧠 How it works
 
-**Tests (required for CS50):**
+### Secure generation
+
+Password generation uses Python's [`secrets`](https://docs.python.org/3/library/secrets.html) module rather than the non-cryptographic `random` module.
+
+When multiple character classes are enabled, KEYGEN makes sure every selected class is represented before shuffling the final result.
+
+For password strength, the project estimates entropy using:
 
 ```text
+length × log2(character_pool_size)
+```
+
+Passphrase strength is estimated as:
+
+```text
+words × 9 bits
+```
+
+These calculations are estimates, not guarantees about real-world attack time.
+
+### Encrypted vault
+
+Vault unlocking derives a key from the master password using **PBKDF2-HMAC-SHA256 with 200,000 iterations**, then decrypts the local vault using **AES-256-GCM**.
+
+The master password is never stored by KEYGEN.
+
+That also means there is no "forgot password" recovery path. Losing the master password means the vault can only be discarded by deleting it.
+
+---
+
+## 🗂️ Project structure
+
+```text
+KeyGen/
+├── project.py                  # Application entry point + CS50P-required helpers
+├── test_project.py             # Tests for core required helpers
+├── requirements.txt            # Python dependencies
+│
+├── app/                        # GUI, widgets, themes, dialogs, animations
+│
+├── core/                       # Generation, word list, strength, crypto, vault I/O
+│
+├── packaging/                 # PyInstaller + Inno Setup build files
+│   ├── keygen.spec
+│   ├── build.bat
+│   ├── sign.bat
+│   └── ...
+│
+└── tools/
+    └── make_icon.py            # Generates the application icon
+```
+
+---
+
+## 🖥️ Run from source
+
+KEYGEN is currently intended for **Windows**.
+
+### Requirements
+
+Python **3.12+** is recommended.
+
+### Install
+
+```powershell
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+### Run
+
+```powershell
+python project.py
+```
+
+A native **PySide6 / Qt Widgets** window will open.
+
+---
+
+## 🧪 Tests
+
+The project includes the helpers required for the CS50P final project along with tests for the core generation and strength logic.
+
+Run:
+
+```powershell
 pytest test_project.py -q
 ```
 
-**Build on Windows** (needs [Inno Setup 6](https://jrsoftware.org/isinfo.php) for the setup program):
+---
 
-```text
+## 📦 Build a Windows application
+
+The repository includes a PyInstaller specification and an Inno Setup installer script.
+
+Run the build script from Windows:
+
+```powershell
 packaging\build.bat
 ```
 
-Output:
+Expected output:
 
-- `dist\KEYGEN\KEYGEN.exe` — the application
-- `dist\keygen-setup.exe` — the installer (only if Inno Setup is installed)
+```text
+dist\KEYGEN\KEYGEN.exe
+dist\keygen-setup.exe
+```
 
-Optional local signing (this computer only): the build script can create a self-signed cert. It will **not** clear SmartScreen for other people. Public release needs a paid Authenticode certificate (`packaging\sign.bat`).
+`dist\KEYGEN\KEYGEN.exe` is the portable application build. The setup executable is produced when **Inno Setup 6** is available.
+
+Unsigned builds may trigger Windows SmartScreen warnings. That is expected for binaries without a trusted public code-signing certificate.
 
 ---
 
-KEYGEN is a CS50P final project: one `project.py`, three tested helpers, a real desktop program, and more work than a single problem set. Paste the YouTube demo URL on the Video Demo line before you submit.
+## 📤 Export formats
+
+KEYGEN supports several export formats for different workflows.
+
+| Format | Encryption | Intended use |
+|---|---:|---|
+| `.bin` | ✅ Yes | KEYGEN-to-KEYGEN encrypted backup/import |
+| `.csv` | ❌ No | Browser password import workflows |
+| `.json` | ❌ No | Structured local data |
+| `.txt` | ❌ No | Human-readable export |
+| `.md` | ❌ No | Human-readable Markdown export |
+
+> ⚠️ **Important:** CSV, JSON, TXT, and Markdown exports are readable files. Anyone who obtains one of them can read the credentials inside. Treat them like plaintext secrets and delete them when they are no longer needed.
+
+---
+
+## 🎨 Design philosophy
+
+KEYGEN deliberately avoids looking like a default Qt demo.
+
+The interface uses a near-black background with the project's orange accent (`#FF5A1F`), custom-painted widgets, hand-drawn icons, blurred vault rows, and small animations to make a compact security utility feel like a real desktop product.
+
+The project also keeps its visual assets local. There are no icon CDNs, remote fonts, or online UI dependencies required to render the application.
+
+---
+
+## 🔐 Security notes
+
+KEYGEN is built around a few simple rules: generate secrets with a cryptographically secure random source, keep vault data local, never store the master password, and don't pretend that an export format is encrypted when it isn't.
+
+The encrypted vault is stored at:
+
+```text
+%USERPROFILE%\.keygen\vault.bin
+```
+
+A forgotten master password cannot be recovered by the application.
+
+---
+
+## 🎓 CS50P
+
+KEYGEN is a **CS50P final project** built around a single `project.py` entry point and the required tested helper functions, while still growing into a complete native desktop application.
+
+The project combines coursework requirements with practical application architecture, UI design, cryptography, testing, packaging, and Windows desktop distribution.
+
+---
+
+## 📌 Project notes
+
+The source tree stays relatively small because the application is mostly Python code plus a small set of assets.
+
+The installed application is much larger because PyInstaller bundles the Python runtime and Qt dependencies with the program. The packaging configuration removes unused Qt components such as WebEngine, QML, and Multimedia where possible without changing the interface.
+
+---
+
+<div align="center">
+
+### Built with Python • PySide6 • Cryptography • A little stubbornness 😄
+
+</div>
