@@ -1,7 +1,5 @@
 # KEYGEN
 
-#### Video Demo:  <PASTE YOUR YOUTUBE URL HERE>
-
 #### Description:
 
 KEYGEN is an offline Windows desktop app written only in Python. It creates strong passwords, passphrases, and PINs, estimates how hard they are to guess, can lengthen a weak password with extra random characters, and stores logins in a local encrypted vault. There is no website, no account, and no internet use while it runs.
